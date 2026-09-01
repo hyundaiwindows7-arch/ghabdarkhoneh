@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ghabdarkhoneh | فروشگاه لوازم جانبی موبایل</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#f6f6f4;color:#171717}
+header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #eee}.nav{max-width:1180px;margin:auto;padding:15px 20px;display:flex;align-items:center;gap:18px}
+.logo{font-size:23px;font-weight:900}.logo span{color:#c99a45}nav{display:flex;gap:18px;margin-right:auto}nav a{text-decoration:none;color:#444;font-size:14px}
+.search{width:250px;padding:11px 14px;border:0;background:#f3f3f1;border-radius:13px;outline:none}
+.hero{max-width:1180px;margin:25px auto;padding:42px;border-radius:26px;background:#111;color:white;display:flex;justify-content:space-between;align-items:center}.hero h1{font-size:38px;margin:0 0 12px}.hero p{color:#ddd;line-height:2}.btn{background:#d3a455;border:0;border-radius:12px;padding:12px 20px;font-weight:800;cursor:pointer}
+.wrap{max-width:1180px;margin:28px auto;padding:0 20px}.title{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.title h2{margin:0}.products{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{background:white;border:1px solid #e9e9e7;border-radius:20px;padding:13px;overflow:hidden}.pic{height:205px;border-radius:15px;background:#f2f2ef;display:flex;align-items:center;justify-content:center;overflow:hidden}.pic img{width:100%;height:100%;object-fit:contain}.pic .emoji{font-size:65px}.card h3{font-size:15px;margin:13px 0 7px}.muted{color:#888;font-size:12px}.price{font-weight:900;font-size:17px}.add,.edit,.delete{border:0;border-radius:11px;padding:10px;cursor:pointer;font-weight:700}.add{width:100%;background:#111;color:#fff}.edit{background:#eee}.delete{background:#fee;color:#a00}
+.admin{background:#fff;border:1px solid #e8e8e8;border-radius:20px;padding:22px;margin-bottom:40px}.admin h2{margin-top:0}.form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.form input,.form textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:11px;font-family:inherit}.form textarea{min-height:80px;resize:vertical}.full{grid-column:1/-1}.preview{width:100px;height:100px;border-radius:12px;background:#f2f2ef;object-fit:contain;margin-top:8px}.actions{display:flex;gap:8px;margin-top:12px}.primary{background:#d3a455;border:0;border-radius:11px;padding:12px 20px;font-weight:900;cursor:pointer}.secondary{background:#eee;border:0;border-radius:11px;padding:12px 20px;cursor:pointer}
+.admin-list{display:grid;gap:10px;margin-top:20px}.admin-item{display:flex;align-items:center;gap:12px;padding:10px;border:1px solid #eee;border-radius:14px}.admin-item img{width:55px;height:55px;object-fit:contain;border-radius:9px;background:#f4f4f2}.admin-item .grow{flex:1}
+footer{background:#111;color:#fff;margin-top:60px;padding:30px 20px}.foot{max-width:1180px;margin:auto}
+#adminSection{display:none}.empty{text-align:center;padding:35px;background:#fff;border-radius:18px;color:#888}
+@media(max-width:800px){nav{display:none}.search{width:150px}.hero{margin:15px;padding:28px}.hero h1{font-size:27px}.products{grid-template-columns:repeat(2,1fr)}.pic{height:150px}.form{grid-template-columns:1fr}.full{grid-column:auto}.admin-item{align-items:flex-start;flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<header><div class="nav">
+<div class="logo">ghabdarkho<span>neh</span></div><button class="primary" style="margin-right:auto;padding:9px 14px" onclick="showAdmin()">＋ مدیریت محصولات</button>
+<input class="search" placeholder="جستجو در محصولات..." oninput="filterProducts(this.value)">
+<nav><a href="#">خانه</a><a href="#products">محصولات</a><a href="#adminSection" onclick="showAdmin()">مدیریت محصولات</a></nav>
+</div></header>
+
+<section class="hero"><div><h1>همه‌چیز برای موبایل شما</h1><p>قاب، گلس و لوازم جانبی با کیفیت بالا و قیمت مناسب.</p><button class="btn" onclick="document.querySelector('#products').scrollIntoView({behavior:'smooth'})">مشاهده محصولات</button></div><div style="font-size:110px">📱</div></section>
+
+<section class="wrap" id="products">
+<div class="title"><h2>محصولات</h2><span class="muted">محصولات فروشگاه شما</span></div>
+<div class="products" id="grid"></div>
+</section>
+
+<section class="wrap" id="adminSection">
+<div class="admin">
+<h2>مدیریت محصولات</h2>
+<p class="muted">عکس، نام، مدل گوشی و قیمت را خودت وارد کن. اطلاعات این نسخه داخل همین مرورگر ذخیره می‌شود.</p>
+<div class="form">
+<input id="name" placeholder="نام محصول، مثلاً قاب شفاف">
+<input id="model" placeholder="مدل گوشی، مثلاً iPhone 15 Pro">
+<input id="price" placeholder="قیمت، مثلاً 299000" type="number">
+<input id="category" placeholder="دسته‌بندی، مثلاً قاب یا گلس">
+<textarea id="desc" class="full" placeholder="توضیحات محصول"></textarea>
+<div class="full">
+<label>عکس محصول را انتخاب کن:</label><br>
+<input id="image" type="file" accept="image/*" onchange="previewImage(event)">
+<br><img id="preview" class="preview" alt="پیش‌نمایش">
+</div>
+</div>
+<div class="actions"><button class="primary" onclick="saveProduct()">ذخیره محصول</button><button class="secondary" onclick="resetForm()">پاک کردن فرم</button></div>
+<input type="hidden" id="editId">
+<div id="adminList" class="admin-list"></div>
+</div>
+</section>
+
+<footer><div class="foot"><strong>ghabdarkhoneh</strong><p class="muted">همراه همیشگی شما</p></div></footer>
+
+<script>
+const defaultProducts=[
+{id:1,name:'قاب شفاف ضد ضربه',model:'مناسب مدل‌های مختلف',price:299000,category:'قاب',desc:'محافظت مناسب با طراحی شفاف',image:''},
+{id:2,name:'گلس ضد خش فول چسب',model:'مناسب مدل‌های مختلف',price:199000,category:'گلس',desc:'شفافیت بالا و نصب آسان',image:''},
+{id:3,name:'شارژر سریع',model:'USB-C',price:499000,category:'شارژر',desc:'شارژ سریع و ایمن',image:''},
+{id:4,name:'هندزفری بی‌سیم',model:'بلوتوث',price:899000,category:'هندزفری',desc:'صدای شفاف و طراحی سبک',image:''}
+];
+let products=JSON.parse(localStorage.getItem('ghabdarkhoneh_products')||'null')||defaultProducts;
+let currentImage='';
+
+function money(n){return Number(n).toLocaleString('fa-IR')+' تومان'}
+function render(){
+ const grid=document.getElementById('grid');
+ grid.innerHTML=products.length?products.map(p=>`
+ <div class="card" data-name="${p.name} ${p.model} ${p.category}">
+ <div class="pic">${p.image?`<img src="${p.image}" alt="${p.name}">`:'<span class="emoji">📱</span>'}</div>
+ <h3>${p.name}</h3><div class="muted">${p.model}</div><div class="muted">${p.category}</div>
+ <p class="price">${money(p.price)}</p><div class="muted">${p.desc||''}</div>
+ <button class="add" onclick="alert('محصول به سبد خرید اضافه شد')">افزودن به سبد خرید</button>
+ </div>`).join(''):'<div class="empty">هنوز محصولی اضافه نشده است.</div>';
+ renderAdmin();
+}
+function showAdmin(){document.getElementById('adminSection').style.display='block';setTimeout(()=>document.getElementById('adminSection').scrollIntoView({behavior:'smooth'}),30)}
+function previewImage(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{currentImage=r.result;document.getElementById('preview').src=currentImage};r.readAsDataURL(f)}
+function saveProduct(){
+ const name=document.getElementById('name').value.trim(); const price=document.getElementById('price').value;
+ if(!name||!price){alert('نام محصول و قیمت را وارد کن.');return}
+ const editId=document.getElementById('editId').value;
+ const data={name,model:document.getElementById('model').value.trim(),price:Number(price),category:document.getElementById('category').value.trim(),desc:document.getElementById('desc').value.trim(),image:currentImage};
+ if(editId){const i=products.findIndex(p=>p.id==editId);data.id=products[i].id;products[i]=data}else{data.id=Date.now();products.push(data)}
+ localStorage.setItem('ghabdarkhoneh_products',JSON.stringify(products));resetForm();render();alert('محصول با موفقیت ذخیره شد.')}
+function editProduct(id){const p=products.find(x=>x.id==id);if(!p)return;document.getElementById('name').value=p.name;document.getElementById('model').value=p.model;document.getElementById('price').value=p.price;document.getElementById('category').value=p.category;document.getElementById('desc').value=p.desc||'';document.getElementById('editId').value=p.id;currentImage=p.image||'';document.getElementById('preview').src=currentImage||'';showAdmin()}
+function deleteProduct(id){if(!confirm('این محصول حذف شود؟'))return;products=products.filter(p=>p.id!=id);localStorage.setItem('ghabdarkhoneh_products',JSON.stringify(products));render()}
+function resetForm(){['name','model','price','category','desc','editId'].forEach(id=>document.getElementById(id).value='');document.getElementById('image').value='';document.getElementById('preview').src='';currentImage=''}
+function renderAdmin(){document.getElementById('adminList').innerHTML=products.map(p=>`<div class="admin-item"><img src="${p.image||''}" alt=""><div class="grow"><b>${p.name}</b><div class="muted">${money(p.price)} • ${p.model}</div></div><button class="edit" onclick="editProduct(${p.id})">ویرایش</button><button class="delete" onclick="deleteProduct(${p.id})">حذف</button></div>`).join('')}
+function filterProducts(q){q=q.trim().toLowerCase();document.querySelectorAll('.card').forEach(c=>c.style.display=!q||c.dataset.name.toLowerCase().includes(q)?'block':'none')}
+render();
+</script>
+</body>
+</html>
